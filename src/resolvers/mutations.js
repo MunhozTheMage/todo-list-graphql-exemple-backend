@@ -9,7 +9,7 @@ const updateTodo = async (
   if (!todo) return;
 
   todo.title = title || todo.title;
-  todo.done = done !== false && !done ? todo.done : done;
+  todo.done = typeof done === "boolean" ? done : todo.done;
   todo.description = description || todo.description;
 
   await todo.save();
@@ -25,7 +25,7 @@ const createTodo = (_ctx, { input: { title, done, description } }) =>
   });
 
 const deleteTodo = (_ctx, { id }) =>
-  Todo.destroy({ where: { id } }).then((deleted) => (deleted ? id : null));
+  Todo.destroy({ where: { id } }).then((deleted) => (deleted > 0 ? id : null));
 
 module.exports = {
   updateTodo,
